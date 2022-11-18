@@ -35,9 +35,10 @@ breast_cancer_df = read_csv(file="Breast Cancer METABRIC (1).csv") %>%
          relapse_free_status = factor(relapse_free_status),
          sex = factor(sex),
          x3_gene_classifier_subtype = factor(x3_gene_classifier_subtype),
-         tumor_stage = factor(tumor_stage),
-         status = factor(status)
-         ) %>%  select(-c(4,10,13,23,25,34)) %>% drop_na(status)
+         tumor_stage = factor(tumor_stage)
+         ) %>%  
+  select(-c(4,10,13,23,25,34)) %>% 
+  rename(time = overall_survival_months, trt = type_of_breast_surgery) %>% drop_na(status)
 ```
 
 ```{r}
@@ -49,8 +50,11 @@ library(ggfortify)
 ```
 
 ```{r}
-km_fit <- survfit(Surv(overall_survival_months, status) ~ 1, data=breast_cancer_df, type = "kaplan-meier")
+km_fit <- survfit(Surv(time, status) ~ 1, data=breast_cancer_df, type = "kaplan-meier")
 summary(km_fit)
 autoplot(km_fit)
+
+km_fit_trt <- survfit(Surv(time, status) ~ trt, data=breast_cancer_df, type = "kaplan-meier")
+autoplot(km_fit_trt)
 ```
 
