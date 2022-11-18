@@ -10,11 +10,14 @@ library(tidyverse)
 library(dplyr)
 ```
 
+Data cleaning: 
+1. changed all character variable to factors 
+2. status: if the patient status is "died of disease", change it to 1. Otherwise, if patient status is "Living" or "Died of Other Causes" then we consider it as censored and changed it to 0. 
 
 ```{r}
 breast_cancer_df = read_csv(file="Breast Cancer METABRIC (1).csv") %>% 
   janitor::clean_names() %>% 
-  mutate(status  = ifelse(patients_vital_status == "Living", 1, 0),
+  mutate(status  = ifelse(patients_vital_status == "Died of Disease", 1, 0),
          type_of_breast_surgery = factor(type_of_breast_surgery),
          cancer_type_detailed = factor(cancer_type_detailed),
          chemotherapy = factor(chemotherapy),
