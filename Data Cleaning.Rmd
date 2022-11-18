@@ -37,5 +37,20 @@ breast_cancer_df = read_csv(file="Breast Cancer METABRIC (1).csv") %>%
          x3_gene_classifier_subtype = factor(x3_gene_classifier_subtype),
          tumor_stage = factor(tumor_stage),
          status = factor(status)
-         ) %>%  select(-c(4,10,13,23,25,34))
+         ) %>%  select(-c(4,10,13,23,25,34)) %>% drop_na(status)
 ```
+
+```{r}
+library(survival)
+library(ranger)
+library(ggplot2)
+library(dplyr)
+library(ggfortify)
+```
+
+```{r}
+km_fit <- survfit(Surv(overall_survival_months, status) ~ 1, data=breast_cancer_df, type = "kaplan-meier")
+summary(km_fit)
+autoplot(km_fit)
+```
+
