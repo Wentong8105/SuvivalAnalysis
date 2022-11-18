@@ -1,0 +1,38 @@
+---
+title: "Data Cleaning"
+author: "Anna Ma"
+date: "2022-11-18"
+output: html_document
+---
+
+```{r}
+library(tidyverse)
+library(dplyr)
+```
+
+
+```{r}
+breast_cancer_df = read_csv(file="Breast Cancer METABRIC (1).csv") %>% 
+  janitor::clean_names() %>% 
+  mutate(status  = ifelse(patients_vital_status == "Living", 1, 0),
+         type_of_breast_surgery = factor(type_of_breast_surgery),
+         cancer_type_detailed = factor(cancer_type_detailed),
+         chemotherapy = factor(chemotherapy),
+         pam50_claudin_low_subtype = factor(pam50_claudin_low_subtype),
+         er_status = factor(er_status),
+         her2_status = factor(her2_status),
+         tumor_other_histologic_subtype = factor(tumor_other_histologic_subtype),
+         hormone_therapy = factor(hormone_therapy),
+         inferred_menopausal_state = factor(inferred_menopausal_state),
+         integrative_cluster = factor(integrative_cluster),
+         primary_tumor_laterality = factor(primary_tumor_laterality),
+         lymph_nodes_examined_positive = factor(lymph_nodes_examined_positive),
+         pr_status = factor(pr_status),
+         radio_therapy = factor(radio_therapy),
+         relapse_free_status = factor(relapse_free_status),
+         sex = factor(sex),
+         x3_gene_classifier_subtype = factor(x3_gene_classifier_subtype),
+         tumor_stage = factor(tumor_stage),
+         status = factor(status)
+         ) %>%  select(-c(4,10,13,23,25,34))
+```
